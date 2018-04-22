@@ -30,7 +30,7 @@ public class MySqlBolt extends BaseBasicBolt{
 	private static ObjectMapper mapper  = new ObjectMapper();
 	private static Logger log = LoggerFactory.getLogger(MySqlBolt.class);
 	private static MysqlDao mysqlDao = null;
-	private static boolean flg = true;
+	private static boolean flg = true;// 采用2个List轮流使用
 	private static CopyOnWriteArrayList<RequestLog> cache1 = new CopyOnWriteArrayList<RequestLog>(); // flg=true
 	private static CopyOnWriteArrayList<RequestLog> cache2 = new CopyOnWriteArrayList<RequestLog>(); // flg=false
 	public static List<RequestLog> sqlError = new ArrayList<RequestLog>();
@@ -56,6 +56,7 @@ public class MySqlBolt extends BaseBasicBolt{
 //		log.info(line);
 		RequestLog requestLog = null;
 		try {
+			// 将json转换为对象
 			requestLog = mapper.readValue(line, RequestLog.class);
 		} catch (Exception e) {
 			//e.printStackTrace();
@@ -92,7 +93,7 @@ public class MySqlBolt extends BaseBasicBolt{
 			}
 		}
 		
-		if(list==null || list.size()==0){
+		if(list.size()==0){
 			return;
 		}
 		

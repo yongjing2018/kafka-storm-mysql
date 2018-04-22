@@ -20,19 +20,17 @@ public class ReadFileSpout extends BaseRichSpout{
 
 	private SpoutOutputCollector spoutCollector;
 	private BufferedReader buff = null;
-	private String line = null;
 	public static double num = 0;
 	
 	@Override
 	public void nextTuple() {
+		String line = null;
 		if(buff==null){
 			return;
 		}
-		
 		if(num>1000){
 			return;
 		}
-		
 		try {
 			line=buff.readLine();
 			if(line==null){
@@ -46,15 +44,14 @@ public class ReadFileSpout extends BaseRichSpout{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-	
 	}
 
 	@Override
 	public void open(Map map, TopologyContext arg1, SpoutOutputCollector spoutCollector) {
+		final String fileName = "/usr/local/openresty/nginx/nginx/logs/bak/2018-02-21/access.log.2018-02-21.87575";
 		this.spoutCollector = spoutCollector;
 		try {
-			buff = new BufferedReader(new FileReader(new File("H:/access_nginx.log")));
+			buff = new BufferedReader(new FileReader(new File(fileName)));
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

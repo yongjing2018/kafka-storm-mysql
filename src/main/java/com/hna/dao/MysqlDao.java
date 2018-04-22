@@ -30,7 +30,7 @@ public class MysqlDao {
 	public MysqlDao(){
 		init();
 	}
-	public void init(){
+	public void init() {
 		InputStream in = MysqlDao.class.getResourceAsStream("/conf.properties");
 		Properties prop = new Properties();
 		try{
@@ -39,7 +39,7 @@ public class MysqlDao {
 			userName = prop.getProperty("userName");
 			userPasswd = prop.getProperty("userPasswd");
 		}catch(Exception e){
-			log.error("conf file load error !!!");
+			log.error("conf file load error !!!{}",e.toString(),e);
 		}
 		
 		try {
@@ -103,15 +103,13 @@ public class MysqlDao {
 		InterProcessMutex lock = new InterProcessMutex(LockUtil.getCuratorFramework(), LockUtil.ZK_LOCK_MYSQL); 
 		boolean save  = true;
 		try{
-			while (lock.acquire(5, TimeUnit.MINUTES) )  
-			{
+			while (lock.acquire(5, TimeUnit.MINUTES) ) {
 			    try {
 			    	save = saveToMysql(sql);
 			    }
-			    finally
-			    {
+			    finally {
 			        lock.release();
-			        break;  		 
+			        break;
 			    }
 			}
 		}catch(Exception e){
